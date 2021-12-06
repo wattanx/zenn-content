@@ -3,7 +3,7 @@ title: "microCMS SDKのC#版を作成した"
 emoji: "👻"
 type: "tech"
 topics: ["csharp", "microcms"]
-published: false
+published: true
 ---
 
 ## はじめに
@@ -173,6 +173,9 @@ public class Sample
 
         // ResponseはT型にデシリアライズされます。
         var response = client.GetList<Category>(new GetListRequest() { Endpoint = "categories", Queries = queries }).Result;
+
+        // デシリアライズしてるので、Type Safeにプロパティアクセス可能
+        response.TotalCount.Is(3);
 
         // JSON化してResponseを確認する
         Console.WriteLine(JsonConvert.SerializeObject(response));
