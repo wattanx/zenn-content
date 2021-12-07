@@ -8,6 +8,8 @@ published: true
 
 ## はじめに
 
+この記事は[microCMS Advent Calender 2021](https://qiita.com/advent-calendar/2021/microcms) 8 日目の記事です
+
 microCMS 様が公式に出している SDK には私もお世話になっています。
 
 https://github.com/microcmsio/microcms-js-sdk
