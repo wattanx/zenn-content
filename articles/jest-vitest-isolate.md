@@ -9,7 +9,7 @@ published: true
 ## はじめに
 
 :::message
-Vitest のバージョンは `0.28.5`時点での話です。
+Vitest のバージョンは `0.31.0`時点での話です。
 :::
 
 現状 Vitest が Jest など他のテスティングフレームワークに比べて遅くなる場合があることがわかっています。
@@ -21,7 +21,8 @@ https://github.com/vitest-dev/vitest/issues/579
 `vitest run`で実行した場合の話であり、`watch`モードは高速です。
 :::
 
-また Vitest を実行する場合、`--no-threads`オプションをつけると速くなるということもわかっています。
+また Vitest を実行する場合、`--single-thread`オプションをつけると速くなるということもわかっています。
+(`0.29.0`以前は `--no-threads`)
 
 https://twitter.com/youyuxi/status/1621299180261244928
 
@@ -35,7 +36,7 @@ https://vitest.dev/config/#threads
 >
 > This might cause all sorts of issues, if you are relying on global state (frontend frameworks usually do) or your code relies on environment to be defined separately for each test. But can be a speed boost for your tests (up to 3 times faster), that don't necessarily rely on global state or can easily bypass that.
 
-`--no-threads`オプションをつけるとシングルスレッドで実行されるだけでなく、`isolate`もされなくなることが記載されています。
+`--single-thread`オプションをつけるとシングルスレッドで実行されるだけでなく、`isolate`もされなくなることが記載されています。
 
 `isolate`されなくなるとはどういうことなのでしょうか。
 
@@ -80,9 +81,9 @@ vm を使うことで別々の環境でテストを実行することが可能�
 Vitest では **isolate にも Worker Threads** を使っています。
 (Jest 同様、並列でテストを走らせるために Worker Threads を使っている)
 
-Worker Threads を `isolate` にも使っているので、`--no-threads`オプションをつけると、`isolate` もされなくなります。
+Worker Threads を `isolate` にも使っているので、`--single-thread`オプションをつけると、`isolate` もされなくなります。
 
-`--no-threads`で下記のテストを実行すると、`test1.spec.ts`が先に実行されるとテストが落ちることが確認できます。
+`--single-thread`で下記のテストを実行すると、`test1.spec.ts`が先に実行されるとテストが落ちることが確認できます。
 
 ```ts:test1.spec.ts
 describe('test 1', () => {
@@ -115,10 +116,10 @@ https://github.com/tinylibs/tinypool
 
 Vitest に移行してテストが遅くなってしまった場合、これまで下記のようなアプローチをとってきました。
 
-### `--no-threads`で実行する
+### `--single-thread`で実行する
 
-まずは `--no-threads`で実行できるか確認します。
-他のテストに影響を与えるようなテストが書かれていなければ、`--no-threads`で高速化できます。
+まずは `--single-thread`で実行できるか確認します。
+他のテストに影響を与えるようなテストが書かれていなければ、`--single-thread`で高速化できます。
 (`isolate`されなくなるため、注意が必要)
 
 ### `shared`オプションをつけてテストを並列実行する
