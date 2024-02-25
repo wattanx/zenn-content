@@ -202,6 +202,57 @@ mockNuxtImport('useNuxtApp', () => {
 
 `mockNuxtImport`はマクロです。実際は、使わない場合のような形に変換されて実行されています。
 
+- `mockComponent`
+
+コンポーネントをモックするためのヘルパー関数です。
+
+```ts
+import { mockComponent } from "@nuxt/test-utils/runtime";
+
+mockComponent("MyComponent", {
+  props: {
+    value: String,
+  },
+  setup(props) {
+    // ...
+  },
+});
+
+// 相対パスを使うこともできます
+mockComponent("~/components/my-component.vue", async () => {
+  // or a factory function
+  return defineComponent({
+    setup(props) {
+      // ...
+    },
+  });
+});
+
+// また、モックコンポーネントにリダイレクトするために SFC を使用することもできます
+mockComponent("MyComponent", () => import("./MockComponent.vue"));
+
+// your tests here
+```
+
+:::warning
+ファクトリ関数内でローカル変数にアクセスできないので、vue の API などにアクセスする必要ある場合はファクトリ関数内で import する必要があります。
+:::
+
+```ts
+import { mockComponent } from "@nuxt/test-utils/runtime";
+
+mockComponent("MyComponent", async () => {
+  const { ref, h } = await import("vue");
+
+  return defineComponent({
+    setup(props) {
+      const counter = ref(0);
+      return () => h("div", null, counter.value);
+    },
+  });
+});
+```
+
 - `registerEndpoint`
 
 モックデータを返す Nitro エンドポイントを作成できます。API にリクエストしてデータを表示するコンポーネントをテストしたい場合に便利です。
