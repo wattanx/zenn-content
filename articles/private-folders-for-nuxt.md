@@ -142,4 +142,4 @@ https://nuxt.com/docs/guide/directory-structure/nuxtignore
 `pages:extend` を使うことで Nuxt でも Next.js の Private folders のような機能を実現することができることを紹介しました。
 
 便利な一方、 `components` などの auto imports が使えなくなるので auto imports を使っている場合は注意が必要です。
-(設定することで Private folders でも auto imports には対応できる)
+(設定することで Private folders でも auto imports には対応できます)
