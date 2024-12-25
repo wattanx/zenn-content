@@ -3,7 +3,7 @@ title: 'Nuxt で Next.js の Private folders のような機能を実現する�
 emoji: '⛰️'
 type: 'tech'
 topics: ['nuxt', 'vue']
-published: false
+published: true
 publication_name: 'comm_vue_nuxt'
 ---
 
