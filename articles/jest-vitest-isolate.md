@@ -78,7 +78,7 @@ vm を使うことで別々の環境でテストを実行することが可能�
 ### Vitest の isolate
 
 Vitest では **isolate にも Worker Threads** を使っています。
-(Jest 同様、並列でテストを走らせるために Worker Threads を使っている)
+(`pool: 'threads'`の場合。Jest 同様、並列でテストを走らせるために Worker Threads を使っている)
 
 Worker Threads を`isolate`にも使っているので、`poolOptions.threads.singleThread: true`にすると`isolate`もされなくなります。
 
