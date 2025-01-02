@@ -1,15 +1,15 @@
 ---
-title: "JestとVitestのisolateについて"
-emoji: "😸"
-type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["vitest", "jest"]
+title: 'JestとVitestのisolateについて'
+emoji: '😸'
+type: 'tech' # tech: 技術記事 / idea: アイデア
+topics: ['vitest', 'jest']
 published: true
 ---
 
 ## はじめに
 
 :::message
-Vitest のバージョンは `0.31.0`時点での話です。
+Vitest のバージョンは `2.1.8`時点での話です。
 :::
 
 現状 Vitest が Jest など他のテスティングフレームワークに比べて遅くなる場合があることがわかっています。
@@ -21,22 +21,21 @@ https://github.com/vitest-dev/vitest/issues/579
 `vitest run`で実行した場合の話であり、`watch`モードは高速です。
 :::
 
-また Vitest を実行する場合、`--single-thread`オプションをつけると速くなるということもわかっています。
-(`0.29.0`以前は `--no-threads`)
+また Vitest を実行する場合、`poolOptions.threads.singleThread: true`にすると速くなるということもわかっています。
+(`1.0.0`以前は`--single-thred`、`0.29.0`以前は`--no-threads`)
 
 https://twitter.com/youyuxi/status/1621299180261244928
 
 公式 Docs にも最大３倍速くなることが記載されています。
 
-https://vitest.dev/config/#threads
+https://vitest.dev/config/#pooloptions-threads-singlethread
 
 > WARNING
->
-> This option is different from Jest's --runInBand. Vitest uses workers not only for running tests in parallel, but also to provide isolation. By disabling this option, your tests will run sequentially, but in the same global context, so you must provide isolation yourself.
->
+> Even though this option will force tests to run one after another, this option is different from Jest's --runInBand. Vitest uses workers not only for running tests in parallel, but also to provide isolation. By disabling this option, your tests will run sequentially, but in the same global context, so you must provide isolation yourself.
+
 > This might cause all sorts of issues, if you are relying on global state (frontend frameworks usually do) or your code relies on environment to be defined separately for each test. But can be a speed boost for your tests (up to 3 times faster), that don't necessarily rely on global state or can easily bypass that.
 
-`--single-thread`オプションをつけるとシングルスレッドで実行されるだけでなく、`isolate`もされなくなることが記載されています。
+`poolOptions.threads.singleThread: true`にするとシングルスレッドで実行されるだけでなく、`isolate`もされなくなることが記載されています。
 
 `isolate`されなくなるとはどういうことなのでしょうか。
 
@@ -81,9 +80,9 @@ vm を使うことで別々の環境でテストを実行することが可能�
 Vitest では **isolate にも Worker Threads** を使っています。
 (Jest 同様、並列でテストを走らせるために Worker Threads を使っている)
 
-Worker Threads を `isolate` にも使っているので、`--single-thread`オプションをつけると、`isolate` もされなくなります。
+Worker Threads を`isolate`にも使っているので、`poolOptions.threads.singleThread: true`にすると`isolate`もされなくなります。
 
-`--single-thread`で下記のテストを実行すると、`test1.spec.ts`が先に実行されるとテストが落ちることが確認できます。
+`poolOptions.threads.singleThread: true`で下記のテストを実行すると、`test1.spec.ts`が先に実行されるとテストが落ちることが確認できます。
 
 ```ts:test1.spec.ts
 describe('test 1', () => {
@@ -107,7 +106,7 @@ describe('test 2', () => {
 (↓ の stackblitz でも確認できます)
 https://stackblitz.com/edit/vitest-dev-vitest-sksonx
 
-なぜ`vm`で `isolate` をしていないのか、詳しい理由は理解できていませんが、`vm が ESM に完全に対応していないため使えない`といったコメントを Issue や Discord で見たことがあります。
+なぜ`vm`で`isolate`をしていないのか、詳しい理由は理解できていませんが、`vm が ESM に完全に対応していないため使えない`といったコメントを Issue や Discord で見たことがあります。
 
 また、Vitest では tinypool の`isokateWorker`オプションを使っているので、Worker を作り直して環境を分離していると思われます。
 https://github.com/tinylibs/tinypool
@@ -116,10 +115,10 @@ https://github.com/tinylibs/tinypool
 
 Vitest に移行してテストが遅くなってしまった場合、これまで下記のようなアプローチをとってきました。
 
-### `--single-thread`で実行する
+### `poolOptions.threads.singleThread: true`で実行する
 
-まずは `--single-thread`で実行できるか確認します。
-他のテストに影響を与えるようなテストが書かれていなければ、`--single-thread`で高速化できます。
+まずは`poolOptions.threads.singleThread: true`で実行できるか確認します。
+他のテストに影響を与えるようなテストが書かれていなければ、`poolOptions.threads.singleThread: true`で高速化できます。
 (`isolate`されなくなるため、注意が必要)
 
 ### `shared`オプションをつけてテストを並列実行する
