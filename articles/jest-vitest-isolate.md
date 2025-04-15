@@ -108,7 +108,7 @@ https://stackblitz.com/edit/vitest-dev-vitest-sksonx
 
 なぜ`vm`で`isolate`をしていないのか、詳しい理由は理解できていませんが、`vm が ESM に完全に対応していないため使えない`といったコメントを Issue や Discord で見たことがあります。
 
-また、Vitest では tinypool の`isokateWorker`オプションを使っているので、Worker を作り直して環境を分離していると思われます。
+また、Vitest では tinypool の`isolateWorker`オプションを使っているので、Worker を作り直して環境を分離していると思われます。
 https://github.com/tinylibs/tinypool
 
 ## Vitest でテストが遅くなる場合どうすればよいか
