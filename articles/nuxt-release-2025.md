@@ -3,7 +3,7 @@ title: "Nuxt 2025 リリースまとめ"
 emoji: "⛰️"
 type: "tech"
 topics: ["nuxt", "vue"]
-published: true
+published: false
 publication_name: "comm_vue_nuxt"
 ---
 
