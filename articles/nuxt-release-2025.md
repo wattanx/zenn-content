@@ -210,6 +210,12 @@ Nuxt は、アプリコード、サーバーコード、shared/ フォルダー�
 
 これにより、型推論がより正確になり、異なるコンテキストで作業している際の混乱を招くエラーが減少します。
 
+### その他の変更
+
+- いくつかの破壊的変更
+  - 詳しくは[アップグレードガイド](https://nuxt.com/docs/4.x/getting-started/upgrade#migrating-to-nuxt-4)を参照
+- Nuxt 3 の EOL は 2026 年 1 月末に
+
 ## Nuxt 4.1
 
 https://nuxt.com/blog/v4-1
