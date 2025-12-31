@@ -65,7 +65,7 @@ https://ja.vuejs.org/guide/components/async#lazy-hydration
 - decorator のサポート (experimental)
 - Layer の namespace が自動で作成されるようになった
 - Error Handling の改善
-- `addTypeTemplate`に nitro の型情報の拡張かどうかを指定するオプションが追加された
+- [`addTypeTemplate`](https://nuxt.com/docs/4.x/api/kit/templates#addtypetemplate)に nitro の型情報の拡張かどうかを指定するオプションが追加された
 - Nitro v2.11 へのアップグレード
 - 依存している unjs ecosystem のメジャーアップデート
 
@@ -74,6 +74,8 @@ https://ja.vuejs.org/guide/components/async#lazy-hydration
 https://nuxt.com/blog/v3-17
 
 ### Data Fetching Improvements
+
+[`useFetch`](https://nuxt.com/docs/4.x/api/composables/use-fetch)と[`useAsyncData`](https://nuxt.com/docs/4.x/api/composables/use-async-data)が以下のように改善されました。
 
 #### Consistent Data Across Components
 
@@ -126,10 +128,10 @@ const { data } = useAsyncData(
 
 ### Built-In Nuxt Components
 
-- `NuxtTime`コンポーネントの追加
-- `NuxtErrorBoundary`コンポーネントの改善
-- `NuxtLink`に`trailingSlash`prop が追加
-- `NuxtLoadingIndicator`コンポーネントの props に`hideDelay`と`resetDelay`が追加
+- [`NuxtTime`](https://nuxt.com/docs/4.x/api/components/nuxt-time)コンポーネントの追加
+- [`NuxtErrorBoundary`](https://nuxt.com/docs/4.x/api/components/nuxt-error-boundary)コンポーネントの改善
+- [`NuxtLink`](https://nuxt.com/docs/4.x/api/components/nuxt-link)に`trailingSlash`prop が追加
+- [`NuxtLoadingIndicator`](https://nuxt.com/docs/4.x/api/components/nuxt-loading-indicator)コンポーネントの props に`hideDelay`と`resetDelay`が追加
 
 ### その他の変更点
 
@@ -145,11 +147,11 @@ https://nuxt.com/blog/v3-18
 ### Lazy Hydration Macros
 
 Nuxt 3.16 で delayed/lazy hydration のサポートが追加されましたが、Auto Import のコンポーネントのみで利用可能でした。
-`defineLazyHydrationComponent`マクロによって明示的に import したコンポーネントでも利用できるようになりました。
+[`defineLazyHydrationComponent`](https://nuxt.com/docs/4.x/api/utils/define-lazy-hydration-component)マクロによって明示的に import したコンポーネントでも利用できるようになりました。
 
 ### Accessibility Improvements
 
-`NuxtRouteAnnouncer`コンポーネントがデフォルトで追加されるようになりました。
+[`NuxtRouteAnnouncer`](https://nuxt.com/docs/4.x/api/components/nuxt-route-announcer)コンポーネントがデフォルトで追加されるようになりました。
 この変更は`app.vue`を利用していない場合にのみ適用されます。`app.vue`を利用してる場合は引き続き手動で追加する必要があります。
 
 ### その他の変更点
@@ -165,6 +167,9 @@ Nuxt 3.16 で delayed/lazy hydration のサポートが追加されましたが�
 - いくつかのバグ修正
 
 ## Nuxt 4.0
+
+major release で破壊的変更を含みますが、v3 にすでに含まれていて`compatibilityVersion: 4`を設定している動かしている場合はほとんど影響を受けません。
+この記事では Nuxt 4 の主要な変更点について紹介します。
 
 https://nuxt.com/blog/v4
 
@@ -280,19 +285,13 @@ import "#entry";
 
 4.1 の変更は 3.19 にも backport されています。
 
-- Improved Lazy Hydration
-  - `defineLazyHydrationComponent`マクロが auto import が OFF の場合でも利用できるようになった
-- Enhanced Page Rules
-  - `experimental.inlineRouteRules`が有効な場合、`NuxtPage`オブジェクトに`rules`プロパティが追加されるようになった
+- [`defineLazyHydrationComponent`](https://nuxt.com/docs/4.x/api/utils/define-lazy-hydration-component)マクロが auto import が OFF の場合でも利用できるようになった
+- `experimental.inlineRouteRules`が有効な場合、`NuxtPage`オブジェクトに`rules`プロパティが追加されるようになった
   - この変更により module からアクセスしやすくなった
-- Module Dependencies and Integration
-  - `moduleDependencies`オプションによって、他のモジュールのオプションを上書きしたりできるようになった
-- Module Lifecycle Hooks
-  - `onInstall`,`onUpgrade`が利用できるようになった
-- Enhanced File Resolution
-  - `resolveFiles`に`ignore`オプションが追加された
-- Simplified Kit Utilities
-  - `addServerImports`が配列以外も受け入れられるようになった
+- `moduleDependencies`オプションによって、他のモジュールのオプションを上書きしたりできるようになった
+- [`defineNuxtModule`](https://nuxt.com/docs/4.x/api/kit/modules#definenuxtmodule)で`onInstall`,`onUpgrade`が利用できるようになった
+- `resolveFiles`に`ignore`オプションが追加された
+- [`addServerImports`](https://nuxt.com/docs/4.x/api/kit/nitro#addserverimports)が配列以外も受け入れられるようになった
 - いくつかのバグ修正とパフォーマンス改善
 
 ## Nuxt 4.2
@@ -331,26 +330,29 @@ dev server が単一になり、パフォーマンスの改善などが期待で
 ### Async Data Handler Extraction
 
 `useAsyncData`,`useLazyAsyncData`の中に書いた処理を自動で別の chunk に分離できるようになりました。
-特に Static Generation のときに効果的で、Static Generation の場合ビルドのときにしか必要ないので client bundle から除外されます。
+特に Static Generation のときに効果的です。
+Static Generation の場合`useAsyncData`,`useLazyAsyncData`の中に書く処理はビルドのときにしか必要ないので、client bundle から除外されます。
 
 この機能は`experimental.extractAsyncDataHandlers`を有効にすることで利用できます。
 
 ### Experimental TypeScript Plugin Support
 
-`@dxup/nuxt`module を使って TypeScript の開発体験を向上できるようになりました。
+[`@dxup/nuxt`](https://github.com/KazariEX/dxup)module を使って TypeScript の開発体験を向上できるようになりました。
 このモジュールは、Nuxt 固有の機能を使用する際の体験を向上させることを目的とした多数の TypeScript プラグインを追加します。
 
 例えば以下のような機能があります。
 
 - Auto Import されたコンポーネントファイルの名前を変更すると、すべての参照が自動的に更新されます
-- import(`~/assets/${name}.webp`)のようなグロブパターンを使用する際に、ファイルに直接移動できます
+- `` import(`~/assets/${name}.webp`) ``のようなグロブパターンを使用する際に、ファイルに直接移動できます
 - データフェッチ関数（`$fetch`、`useFetch`、`useLazyFetch`）からサーバールートハンドラーにジャンプします
 - ランタイム構成プロパティで定義への移動がシームレスに機能します
-- 自動インポートされたコンポーザブルとユーティリティのナビゲーションを改善する`@dxup/unimport`プラグインが含まれています
+- 自動インポートされたコンポーザブルとユーティリティのナビゲーションを改善する[`@dxup/unimport`](https://github.com/KazariEX/dxup/tree/main/packages/unimport)プラグインが含まれています
+
+この機能は`experimental.typescriptPlugin`を有効にすることで利用できます。
 
 ### その他の変更点
 
 4.2 の変更は 3.20 にも backport されています。
 
-- nitro server の実装を `@nuxt/nitro-server` package に分離
+- nitro server の実装を`@nuxt/nitro-server`package に分離
 - いくつかのバグ修正とパフォーマンス改善
