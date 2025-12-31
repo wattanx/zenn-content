@@ -263,7 +263,7 @@ import "#entry";
 import "#entry";
 ```
 
-ネイティブのインポートマップサポートが必要ですが、`vite.build.target`をインポートマップをサポートしていないブラウザに含めるように設定している場合、Nuxt は自動的に無効にします。
+ネイティブの import maps サポートが必要ですが、`vite.build.target`を import maps をサポートしていないブラウザに含めるように設定している場合、Nuxt は自動的に無効にします。
 
 `experimental.entryImportMap`オプションを使用して手動で有効または無効にすることもできます。
 
